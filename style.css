@@ -167,51 +167,30 @@ body{
 }
 .nf{font-family:var(--pixel-latin);font-size:clamp(34px,5vw,48px);margin-top:2px;text-shadow:0 0 14px rgba(255,255,255,.5)}
 
-/* 倒數：老虎機式滾動數字，所有 0 都顯示 */
+/* 倒數：逐位數字方塊，所有 0 都顯示 */
 .count{
   margin-top:56px;display:flex;justify-content:center;gap:clamp(3px,.9vw,6px);
   font-family:var(--pixel-latin);font-variant-numeric:tabular-nums;
 }
 .digit{
-  --h:clamp(50px,14vw,84px);
-  position:relative;overflow:hidden;
-  width:clamp(30px,9vw,56px);height:var(--h);
+  position:relative;width:clamp(30px,9vw,56px);height:clamp(50px,14vw,84px);
+  display:grid;place-items:center;
   font-size:clamp(30px,9vw,56px);line-height:1;
-  border:2px solid rgba(255,255,255,.9);
-  background:linear-gradient(rgba(255,255,255,.1),rgba(255,255,255,.015));
-  box-shadow:inset 0 0 12px rgba(255,255,255,.1),0 0 16px rgba(127,243,255,.3);
-}
-.roll{height:calc(var(--h) * 10);will-change:transform}
-.roll.go{transition:transform .55s cubic-bezier(.2,.9,.15,1)}
-.roll b{
-  display:grid;place-items:center;height:var(--h);font-weight:400;
+  border:2px solid rgba(255,255,255,.85);
+  background:linear-gradient(rgba(255,255,255,.09),rgba(255,255,255,.015));
+  box-shadow:inset 0 0 12px rgba(255,255,255,.08),0 0 16px rgba(127,243,255,.28);
   text-shadow:0 0 12px rgba(255,255,255,.8),2px 0 rgba(127,243,255,.55),-2px 0 rgba(255,122,217,.55);
 }
-.digit.moving .roll{filter:blur(1.2px)}
-.digit::after{ /* 上下遮罩 + 中線 */
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(rgba(0,0,0,.55),transparent 28%,transparent 72%,rgba(0,0,0,.55));
+.digit::after{ /* 中線 */
+  content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(255,255,255,.18);
 }
-.count.pulse{animation:rgb .5s steps(5)}
-@keyframes rgb{
-  0%{filter:drop-shadow(5px 0 0 rgba(127,243,255,.9)) drop-shadow(-5px 0 0 rgba(255,122,217,.9));transform:translateX(2px)}
-  60%{filter:drop-shadow(2px 0 0 rgba(127,243,255,.6)) drop-shadow(-2px 0 0 rgba(255,122,217,.6));transform:none}
-  100%{filter:none;transform:none}
+.digit.tick{animation:tick .35s steps(4)}
+@keyframes tick{
+  0%{background:#fff;color:#000;text-shadow:none;transform:translateY(-4px)}
+  50%{transform:translateY(2px)}
+  100%{transform:none}
 }
-.count.zero .digit{border-color:var(--cy);box-shadow:0 0 26px rgba(127,243,255,.7)}
-.count.zero{animation:blink 1s steps(2) infinite}
-@keyframes blink{50%{opacity:.55}}
-
-/* WebGL 金屬扭轉環 */
-#gl{position:absolute;inset:0;width:100%;height:100%;display:block}
-.bg.gl-on .ring{display:none}
-.bg.gl-on.has-img #gl{display:none}
-
-/* 換頁：百葉窗閃白切換 */
-.wipe{position:fixed;inset:0;z-index:50;pointer-events:none;display:flex;flex-direction:column}
-.wipe i{flex:1;background:#fff;transform:scaleX(0);transform-origin:left}
-.wipe.in i{transform:scaleX(1);transition:transform .25s steps(4) calc(var(--i) * 35ms)}
-.wipe.out i{transform-origin:right;transform:scaleX(0);transition:transform .25s steps(4) calc(var(--i) * 35ms)}
+.count.zero .digit{border-color:var(--cy);box-shadow:0 0 22px rgba(127,243,255,.6)}
 
 /* 404 故障閃動 */
 .glitch{position:relative}
